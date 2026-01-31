@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = `<div class="fade-in">`;
         html += `<div class="mb-10 p-6 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm shadow-inner">
                     <span class="text-[10px] text-purple-400 font-mono tracking-widest uppercase mb-2 block opacity-60">分析指令 (DIRECTIVE)</span>
-                    <h2 class="text-2xl font-display font-light text-white leading-tight">${phase.directorPrompt}</h2>
+                    <h2 class="text-base font-display font-light text-white leading-tight">${phase.directorPrompt}</h2>
                  </div>`;
 
 
