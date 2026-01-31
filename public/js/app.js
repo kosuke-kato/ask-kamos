@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
                     ? 'http://127.0.0.1:5001/ask-kamos/us-central1/askKamos'
-                    : '/ask';
+                    : 'https://us-central1-ask-kamos.cloudfunctions.net/askKamos';
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
