@@ -10,7 +10,7 @@
             {
                 "source": "/ask",
                 "function": "askKamos",
-                "region": "us-central1"
+                "region": "asia-northeast1"
             }
         ]
     },

@@ -9,7 +9,7 @@ const app = express();
 
 // Set global options for Gen 2 functions
 setGlobalOptions({
-    region: "us-central1",
+    region: "asia-northeast1",
     timeoutSeconds: 540,
     memory: "1GiB"
 });
@@ -68,7 +68,7 @@ const handleAsk = async (req, res) => {
             if (phaseNum === 1) {
                 // Phase 1: Use raw user prompt directly
                 kamosCommand = prompt;
-                res.write(`data: ${JSON.stringify({ status: `ユーザーの入力をそのままフェーズ 1 として採用します: "${kamosCommand}"`, role: 'system' })}\n\n`);
+                res.write(`data: ${JSON.stringify({ status: `フェーズ 1: "${kamosCommand}" を分析します`, role: 'system' })}\n\n`);
             } else {
                 // Stream status: Gemini Thinking
                 res.write(`data: ${JSON.stringify({ status: `思考パートナーのGeminiがこれまでの結果を振り返り、次の視点を探しています...`, role: 'gemini' })}\n\n`);
@@ -91,7 +91,7 @@ const handleAsk = async (req, res) => {
                 `;
 
                 const result = await genai.models.generateContent({
-                    model: "gemini-2.0-flash",
+                    model: "gemini-3-flash-preview",
                     contents: directorPrompt
                 });
                 kamosCommand = result.text;
