@@ -1,0 +1,8 @@
+node_modules/
+.firebase/
+firebase-debug.log*
+.DS_Store
+.env
+.agent/temp/
+.agent/knowledge/*.db
+functions/node_modules/

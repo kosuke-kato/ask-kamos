@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Kamos | 思考を醸すAIパートナー</title>
+    <link href="./css/output.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- p5.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <!-- Marked & DOMPurify -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+</head>
+
+<body class="bg-black text-white min-h-screen font-sans selection:bg-purple-500 selection:text-white overflow-x-hidden">
+
+    <!-- Visual Background -->
+    <div id="canvas-container" class="fixed inset-0 z-0 opacity-40 pointer-events-none"></div>
+
+    <!-- Main Interface -->
+    <main class="relative z-10 container mx-auto px-4 py-8 flex flex-col h-screen">
+
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8 fade-in">
+            <h1
+                class="text-3xl font-light tracking-wider font-display bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-300">
+                ASK KAMOS
+            </h1>
+            <div class="text-sm text-gray-400">それちょっとKamosに聞いてみよう！</div>
+        </header>
+
+        <!-- Analysis Dashboard (Hidden by default) -->
+        <div id="analysis-dashboard" class="hidden flex-1 flex flex-col mb-8 overflow-hidden fade-in">
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-4 bg-gray-900/50 p-1 rounded-full border border-white/5 w-fit">
+                <button class="tab-btn" data-tab="0">フェーズ 1</button>
+                <button class="tab-btn" data-tab="1">フェーズ 2</button>
+                <button class="tab-btn" data-tab="2">フェーズ 3</button>
+                <button class="tab-btn border border-purple-500/30" data-tab="3">最終まとめ</button>
+            </div>
+
+            <!-- Matrix Viewport -->
+            <div id="matrix-viewport" class="flex-1 overflow-y-auto scrollbar-thin glass-card p-8 rounded-2xl relative">
+                <div id="matrix-content" class="fade-in">
+                    <!-- Dynamic Matrix Table will be here -->
+                    <div class="flex flex-col items-center justify-center h-full text-gray-400 italic">
+                        <p>じっくりと考えを醸成しています...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Hero (Centered input initially) -->
+        <div id="home-hero" class="flex-1 flex flex-col items-center justify-center fade-in">
+            <!-- Input Area Container (Now inside Hero) -->
+            <div id="input-container" class="relative w-full max-w-3xl">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-[32px] blur-3xl opacity-50">
+                </div>
+                <form id="ask-form" class="surface-m3 relative flex flex-col md:flex-row gap-4 p-2">
+                    <input type="text" id="user-input" class="input-m3 flex-1 border-none bg-transparent"
+                        placeholder="知りたいことを入力してください... (例: '新しい八王子ラーメンの企画')">
+                    <button type="submit" class="btn-m3">
+                        <span>分析を開始</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Chat / Log Area (Shown during analysis) -->
+        <div id="chat-container"
+            class="hidden h-48 overflow-y-auto mb-8 space-y-4 scrollbar-thin p-6 bg-black/40 rounded-[24px] border border-white/5 fade-in">
+            <!-- Logs appear here -->
+        </div>
+
+        <!-- Reset Area -->
+        <div id="reset-container" class="hidden flex justify-center mt-4 fade-in">
+            <button id="reset-btn"
+                class="px-8 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full text-white font-medium transition-all backdrop-blur-md">
+                新しい分析を始める
+            </button>
+        </div>
+
+    </main>
+
+    <script src="./js/app.js"></script>
+    <script src="./js/visuals.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+{
+    "name": "functions",
+    "description": "Cloud Functions for Ask Kamos",
+    "scripts": {
+        "lint": "eslint .",
+        "build": "",
+        "serve": "firebase emulators:start --only functions",
+        "shell": "firebase functions:shell",
+        "start": "npm run shell",
+        "deploy": "firebase deploy --only functions",
+        "logs": "firebase functions:log"
+    },
+    "engines": {
+        "node": "20"
+    },
+    "main": "index.js",
+    "dependencies": {
+        "@google/genai": "^1.39.0",
+        "axios": "^1.6.2",
+        "cors": "^2.8.5",
+        "express": "^5.2.1",
+        "firebase-admin": "^11.8.0",
+        "firebase-functions": "^5.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.9.0",
+        "eslint-config-google": "^0.14.0"
+    },
+    "private": true
+}
