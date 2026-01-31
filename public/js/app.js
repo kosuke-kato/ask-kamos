@@ -14,12 +14,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetContainer = document.getElementById('reset-container');
     const resetBtn = document.getElementById('reset-btn');
     const homeHero = document.getElementById('home-hero');
+    const downloadJsonBtn = document.getElementById('download-json-btn');
 
     if (userInput) userInput.focus();
 
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
             window.location.reload();
+        });
+    }
+
+    if (downloadJsonBtn) {
+        downloadJsonBtn.addEventListener('click', () => {
+            if (currentPhases.length === 0) return;
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentPhases, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `kamos-analysis-${new Date().toISOString().slice(0, 10)}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
         });
     }
 

@@ -39,11 +39,20 @@
         <!-- Analysis Dashboard (Hidden by default) -->
         <div id="analysis-dashboard" class="hidden flex-1 flex flex-col mb-8 overflow-hidden fade-in">
             <!-- Tabs -->
-            <div class="flex gap-2 mb-4 bg-gray-900/50 p-1 rounded-full border border-white/5 w-fit">
+            <div class="flex items-center gap-2 mb-4 bg-gray-900/50 p-1 rounded-full border border-white/5 w-fit">
                 <button class="tab-btn" data-tab="0">フェーズ 1</button>
                 <button class="tab-btn" data-tab="1">フェーズ 2</button>
                 <button class="tab-btn" data-tab="2">フェーズ 3</button>
                 <button class="tab-btn border border-purple-500/30" data-tab="3">最終まとめ</button>
+                <div class="w-px h-4 bg-white/10 mx-1"></div>
+                <button id="download-json-btn"
+                    class="p-2 hover:bg-white/10 rounded-full text-gray-400 hover:text-white transition-colors"
+                    title="JSONをダウンロード">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                </button>
             </div>
 
             <!-- Matrix Viewport -->

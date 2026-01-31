@@ -64,7 +64,7 @@ module.exports = {
         'english': 'var(--kamos-font-family-english)',
         'japanese': 'var(--kamos-font-family-japanese)',
         'display': ['Josefin Sans', 'Noto Sans JP', 'sans-serif'],
-        'sans': ['Noto Sans JP', 'Josefin Sans', 'sans-serif'],
+        'sans': ['Josefin Sans', 'Noto Sans JP', 'sans-serif'],
       },
 
       // KamosのフォントウェイトトークンをTailwindのfontWeightスケールに追加します。
