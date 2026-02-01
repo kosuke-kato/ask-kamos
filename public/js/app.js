@@ -37,6 +37,144 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const generateGraphicBtn = document.getElementById('generate-graphic-btn');
+    if (generateGraphicBtn) {
+        generateGraphicBtn.addEventListener('click', async () => {
+            if (currentPhases.length === 0) {
+                alert("まずは分析を実行してください。");
+                return;
+            }
+
+            // Simple confimation
+            if (!confirm("現在の分析内容からグラフィックレコーディングを生成しますか？\n（生成には約10〜20秒かかります）")) return;
+
+            generateGraphicBtn.disabled = true;
+            generateGraphicBtn.classList.add('opacity-50', 'animate-pulse');
+
+            try {
+                // Synthesize content
+                const mainTopic = currentPhases[0].directorPrompt || "Analysis";
+                // Combine all phases into a context string
+                const matrixContent = currentPhases.map(p =>
+                    `## Phase ${p.phaseNum} (Focus: ${p.directorPrompt})\n${p.analysis.summary || JSON.stringify(p.analysis.report)}`
+                ).join("\n\n");
+
+                const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? 'http://127.0.0.1:5001/ask-kamos/asia-northeast1/askKamos/tool'
+                    : 'https://asia-northeast1-ask-kamos.cloudfunctions.net/askKamos/tool';
+
+                appendLog('system', 'グラフィックレコーディングの生成を開始しました...');
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tool: 'generate_graphic_recording',
+                        params: {
+                            mainTopic,
+                            matrixContent: matrixContent.substring(0, 10000), // Safety clip
+                            toneId: 'warm_illustration'
+                        }
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error);
+
+                if (data.result) {
+                    appendLog('system', 'グラフィックレコーディングが完成しました！');
+                    showImageModal(data.result);
+                } else {
+                    throw new Error("No result returned");
+                }
+
+            } catch (e) {
+                console.error(e);
+                appendLog('system', `生成エラー: ${e.message}`);
+                alert(`生成に失敗しました: ${e.message}`);
+            } finally {
+                generateGraphicBtn.disabled = false;
+                generateGraphicBtn.classList.remove('opacity-50', 'animate-pulse');
+            }
+        });
+    }
+
+    function showImageModal(content) {
+        console.log("Received Image Content:", content);
+
+        // Unwrap if wrapped in a 'result' property (common in MCP responses)
+        if (content && typeof content === 'object' && content.result) {
+            content = content.result;
+        }
+
+        let src = content;
+        if (typeof content === 'object' && content !== null) {
+            // Handle object response
+            if (content.url) src = content.url;
+            else if (content.base64) src = content.base64;
+            else if (content.content) src = content.content;
+            else if (content.image) {
+                if (typeof content.image === 'object' && content.image.data) {
+                    src = content.image.data;
+                } else {
+                    src = content.image;
+                }
+            }
+            else {
+                console.error("Unknown image format:", content);
+                alert("画像データの形式が不明です。コンソールを確認してください。");
+                return;
+            }
+        }
+
+        // If not http and not data uri, assume base64 png
+        if (src && !src.startsWith('http') && !src.startsWith('data:')) {
+            src = `data:image/png;base64,${src}`;
+        }
+
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-image');
+        const downloadLink = document.getElementById('download-link');
+        const closeBtn = document.getElementById('close-modal-btn');
+
+        if (!modal || !modalImg) {
+            console.error("Modal elements not found!");
+            return;
+        }
+
+        modalImg.src = src;
+        downloadLink.href = src;
+        downloadLink.download = `graphic_recording_${new Date().getTime()}.png`;
+
+        // Use native Dialog API for top-layer support
+        if (typeof modal.showModal === "function") {
+            modal.showModal();
+        } else {
+            alert("Your browser does not support the <dialog> API");
+            return;
+        }
+
+        const closeModal = () => {
+            modal.close();
+            modalImg.src = '';
+        };
+
+        // Ensure we don't stack listeners
+        closeBtn.onclick = closeModal;
+
+        // Close on clicking backdrop
+        modal.onclick = (e) => {
+            const rect = modal.getBoundingClientRect();
+            // Dialog backdrop click detection: if click is outside the dialog rect
+            const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height
+                && rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+            if (!isInDialog) {
+                closeModal();
+            }
+        };
+    }
+
     // Tab Switching
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {

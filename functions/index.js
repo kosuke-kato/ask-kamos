@@ -163,6 +163,41 @@ const handleAsk = async (req, res) => {
 app.post("/", handleAsk);
 app.post("/ask", handleAsk);
 
+// Generic Tool Proxy
+const handleTool = async (req, res) => {
+    const { tool, params } = req.body;
+    if (!tool) return res.status(400).json({ error: "Tool name is required" });
+
+    try {
+        const token = process.env.KAMOS_API_TOKEN;
+        if (!token) throw new Error("KAMOS_API_TOKEN missing in server environment");
+
+        const payload = {
+            data: {
+                tool,
+                params: params || {}
+            }
+        };
+
+        const response = await axios.post(KAMOS_API_URL, payload, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            timeout: 120000
+        });
+
+        if (response.data.error) throw new Error(`MCP Error: ${response.data.error}`);
+
+        return res.json({ result: response.data.result });
+
+    } catch (error) {
+        logger.error("Tool Proxy Error", error);
+        return res.status(500).json({ error: error.message });
+    }
+};
+app.post("/tool", handleTool);
+
 exports.askKamos = onRequest(app);
 
 async function callKamos(prompt, useGoogle, includeRAG) {
