@@ -7,3 +7,6 @@ firebase-debug.log*
 .agent/knowledge/*.db
 functions/node_modules/
 playground/outputs/
+.agent
+/docs
+/playground
